@@ -150,9 +150,7 @@ from pathlib import Path
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-LANGUAGES = [
-    ('es', _('Español')),
-]
+
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
