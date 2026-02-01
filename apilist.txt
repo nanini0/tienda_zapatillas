@@ -1,0 +1,46 @@
+
+PRODUCTOS
+GET /api/productos/                    # Lista TODOS los productos
+GET /api/productos/<id>/               # Detalle de UN producto por ID
+
+CATEGORÍAS
+GET /api/categorias/                   # Lista TODAS las categorías
+GET /api/categorias/<id>/              # Detalle de UNA categoría por ID
+
+
+GET /api/productos/ (lista)
+respuesta json 
+[
+  {
+    "id": 1,
+    "nombre": "Zapatillas Nike Air Max",
+    "descripcion": "Zapatillas deportivas...",
+    "precio": 129.99,
+    "categoria": 1,
+    "stock": 50,
+    "imagen": "/media/productos/nike.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Zapatillas Adidas Ultraboost",
+    "descripcion": "Zapatillas running...",
+    "precio": 159.99,
+    "categoria": 1,
+    "stock": 30,
+    "imagen": "/media/productos/adidas.jpg"
+  }
+]
+
+GET /api/productos/1/ (detalle)
+
+{
+  "id": 1,
+  "nombre": "Zapatillas Nike Air Max",
+  "descripcion": "Zapatillas deportivas...",
+  "precio": 129.99,
+  "categoria": 1,
+  "stock": 50,
+  "imagen": "/media/productos/nike.jpg",
+  "fecha_creacion": "2024-01-15T10:30:00Z",
+  "fecha_actualizacion": "2024-01-20T14:25:00Z"
+}
