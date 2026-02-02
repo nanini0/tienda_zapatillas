@@ -30,12 +30,24 @@ class Categoria(models.Model):
     
 
 class Producto(models.Model):
+    COLORES_ZAPATILLAS = [
+        ('negro', 'Negro'),
+        ('blanco', 'Blanco'),
+        ('gris', 'Gris'),
+        ('Azul', 'Azul'),
+        ('Rojo', 'Rojo'),
+        ('verde', 'Verde'),
+        ('beige', 'Beige'),
+        ('amarillo', 'Amarillo'),
+        ('otros', 'Otros'),
+
+    ]
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='productos')
     nombre = models.CharField(max_length=200)
     marca = models.CharField(max_length=100, blank=True, null=True)
+    color = models.CharField(max_length=40, choices=COLORES_ZAPATILLAS,null=True)
     descripcion = models.TextField(blank=True, null=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField()
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     slug = models.SlugField(unique=True, blank=True)

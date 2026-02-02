@@ -15,10 +15,19 @@ class CategoriaAdmin(admin.ModelAdmin):
 class ProductoAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'nombre', 'categoria',
-        'precio', 'stock', 'is_active',
+        'precio', 'color', 'is_active',
         'imagen_preview', 'created_at'
     )
     list_display_links = ('id','nombre',)
+
+
+    list_select_related = ('categoria',)
+
+    list_editable = ('precio', 'color', 'is_active')
+
+    date_hierarchy = 'created_at'
+
+    prepopulated_fields = {'slug': ('nombre',)}
 
     def imagen_preview(self, obj):
         if obj.imagen:
