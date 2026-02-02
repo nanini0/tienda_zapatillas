@@ -8,8 +8,27 @@ class ProductoViewSet(viewsets.ReadOnlyModelViewSet):
     - GET /api/productos/
     - GET /api/productos/
     """
-    queryset = Producto.objects.all() 
-    serializer_class = ProductoSerializer
+    queryset = Producto.objects.all()  #define que datos va a mostrar
+    serializer_class = ProductoSerializer #define que serializador va a usar
+
+    #personalizar consultas
+
+    def get_queryset(self):
+        #este metodo decide que productos se van a devolver\
+        queryset = Producto.objects.all()
+
+        categoria = self.request.query_params.get('categoria')
+        precio_min = self.request.query_params.get('precio_min')
+        precio_max = self.request.query_params.get('precio_max')
+
+        if categoria:
+            queryset = queryset.filter(categoria__id=categoria)
+        
+        if precio_min:
+            queryset = queryset.filter(precio__gte=precio_min)
+        if precio_max:
+            queryset = queryset.filter(precio__lte=precio_max)
+        return queryset
     
 
 class CategoriaViewSet(viewsets.ReadOnlyModelViewSet):
