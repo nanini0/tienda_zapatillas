@@ -32,7 +32,6 @@ class ProductoSerializer(serializers.ModelSerializer):
     imagen_url = serializers.SerializerMethodField()
     imagenes = ImagenProductoSerializer(many=True, read_only=True)
     
-    # Campos calculados
     precio_final = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     ahorro = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     tiene_oferta_vigente = serializers.BooleanField(read_only=True)
@@ -50,10 +49,8 @@ class ProductoSerializer(serializers.ModelSerializer):
             'categoria', 'categoria_id', 'slug', 'is_active', 
             'imagen_url', 'imagenes', 'marca', 'color', 
             'is_recommended', 'created_at', 'updated_at',
-            # Campos de oferta
             'is_oferta', 'precio_original', 'descuento_porcentaje',
             'fecha_inicio_oferta', 'fecha_fin_oferta',
-            # Campos calculados
             'precio_final', 'ahorro', 'tiene_oferta_vigente',
             'precio_original_display'
         ]
@@ -86,6 +83,8 @@ class ProductoSerializer(serializers.ModelSerializer):
 class ProductoListSerializer(serializers.ModelSerializer):
     categoria = serializers.StringRelatedField()
     imagen_url = serializers.SerializerMethodField()
+    imagenes = serializers.SerializerMethodField()
+    
     precio_final = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     precio_original_display = serializers.DecimalField(
         max_digits=10, 
@@ -100,7 +99,7 @@ class ProductoListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'nombre', 'precio', 'precio_final',
             'precio_original_display', 'categoria', 'slug', 
-            'imagen_url', 'marca', 'color',
+            'imagen_url', 'imagenes', 'marca', 'color',
             'is_oferta', 'descuento_porcentaje', 
             'tiene_oferta_vigente', 'is_recommended'
         ]
@@ -112,3 +111,17 @@ class ProductoListSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.imagen.url)
             return obj.imagen.url
         return None
+    
+    def get_imagenes(self, obj):
+        imagenes = obj.imagenes.all()[:3]
+        request = self.context.get('request')
+        
+        return [
+            {
+                'id': img.id,
+                'imagen_url': request.build_absolute_uri(img.imagen.url) if request and img.imagen else img.imagen.url,
+                'orden': img.orden,
+                'is_principal': img.is_principal
+            }
+            for img in imagenes
+        ]
